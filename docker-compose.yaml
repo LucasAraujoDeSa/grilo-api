@@ -1,0 +1,10 @@
+services:
+  grilo-db:
+    image: postgres
+    container_name: grilo-db
+    environment:
+      - POSTGRES_USER=grilo
+      - POSTGRES_PASSWORD=griloPass
+      - POSTGRES_DB=grilo
+    ports:
+      - "5432:5432"
