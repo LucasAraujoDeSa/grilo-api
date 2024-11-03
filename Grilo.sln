@@ -5,6 +5,14 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Api", "Grilo.Api\Grilo.Api.csproj", "{00BE4680-5065-4440-8FF5-C60E083936A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Infra", "Grilo.Infra\Grilo.Infra.csproj", "{04DD3519-6B84-4CE5-99C6-AF33D05CCB5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Domain", "Grilo.Domain\Grilo.Domain.csproj", "{EAB84CF4-EDD1-40CE-809B-9FC90A7ED494}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Shared", "Grilo.Shared\Grilo.Shared.csproj", "{0C45861F-F248-4F1B-8246-310278A56AB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Aplication", "Grilo.Aplication\Grilo.Aplication.csproj", "{57F2F5CF-230B-4EAD-AD92-27633359682B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +26,21 @@ Global
 		{00BE4680-5065-4440-8FF5-C60E083936A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00BE4680-5065-4440-8FF5-C60E083936A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00BE4680-5065-4440-8FF5-C60E083936A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04DD3519-6B84-4CE5-99C6-AF33D05CCB5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04DD3519-6B84-4CE5-99C6-AF33D05CCB5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04DD3519-6B84-4CE5-99C6-AF33D05CCB5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04DD3519-6B84-4CE5-99C6-AF33D05CCB5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAB84CF4-EDD1-40CE-809B-9FC90A7ED494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAB84CF4-EDD1-40CE-809B-9FC90A7ED494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAB84CF4-EDD1-40CE-809B-9FC90A7ED494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAB84CF4-EDD1-40CE-809B-9FC90A7ED494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C45861F-F248-4F1B-8246-310278A56AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C45861F-F248-4F1B-8246-310278A56AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C45861F-F248-4F1B-8246-310278A56AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C45861F-F248-4F1B-8246-310278A56AB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57F2F5CF-230B-4EAD-AD92-27633359682B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57F2F5CF-230B-4EAD-AD92-27633359682B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57F2F5CF-230B-4EAD-AD92-27633359682B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57F2F5CF-230B-4EAD-AD92-27633359682B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

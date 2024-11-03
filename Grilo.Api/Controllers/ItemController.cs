@@ -1,129 +1,108 @@
 using Grilo.Api.Attributes;
-using Grilo.Api.Database;
-using Grilo.Api.Dtos;
-using Grilo.Api.Entities;
+using Grilo.Domain.Dtos;
 using Grilo.Api.Helper;
-using Grilo.Api.Utils;
+using Grilo.Shared.Utils;
+using Grilo.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Grilo.Aplication.UseCases.Item;
 
 namespace Grilo.Api.Controllers
 {
     [ApiController]
     [CustomAuthorizeAttribute()]
     [Route("api/[controller]")]
-    public class ItemController(DatabaseContext context) : ControllerBase
+    public class ItemController(
+        CreateItem createItem,
+        UpdateItem upadteItem,
+        DeleteItem deleteItem,
+        GetAllItens getAllItens,
+        GetItemById getItem
+    ) : ControllerBase
     {
-        private readonly DatabaseContext _context = context;
+        private readonly CreateItem _createItem = createItem;
+        private readonly UpdateItem _upadteItem = upadteItem;
+        private readonly DeleteItem _deleteItem = deleteItem;
+        private readonly GetAllItens _getAllItens = getAllItens;
+        private readonly GetItemById _getItem = getItem;
 
+        #region CreateItem
         [HttpPost]
-        public ActionResult<Result<ItemEntity>> Create([FromBody] CreateItemDTO input)
+        public async Task<ActionResult<Result<ItemEntity?>>> Create([FromBody] CreateItemDTO input)
         {
             try
             {
-                var titleIsInUse = _context.Item.FirstOrDefault(item => item.Title == input.Title);
-
-                if (titleIsInUse != null)
-                {
-                    return Result<ItemEntity>.OperationalError("Title already exists");
-                }
-
-                ItemEntity newItem = new(
-                    title: input.Title,
-                    price: input.Price,
-                    quantity: input.Quantity
-                );
-                _context.Item.Add(newItem);
-                _context.SaveChanges();
-                Result<ItemEntity> result = Result<ItemEntity>.Created(newItem, "Item created successfully!!!");
+                Result<ItemEntity?> result = await _createItem.Execute(input);
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
             {
-                return StatusCode(500, exc.Message);
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region GetAllItens
         [HttpGet]
-        public ActionResult<Result<IEnumerable<ItemEntity>>> GetAll()
+        public async Task<ActionResult<Result<IEnumerable<ItemEntity>>>> GetAll()
         {
             try
             {
-                Result<IEnumerable<ItemEntity>> result = Result<IEnumerable<ItemEntity>>.Ok([.. _context.Item], "success!!!");
+                Result<IEnumerable<ItemEntity>?> result = await _getAllItens.Execute();
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
             {
-                return StatusCode(500, exc.Message);
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region GetItemById
         [HttpGet("{id}")]
-        public ActionResult<Result<ItemEntity?>> GetById(string id)
+        public async Task<ActionResult<Result<ItemEntity?>>> GetById(string id)
         {
             try
             {
-                ItemEntity? item = _context.Item.Find(id);
-                if (item == null)
-                {
-                    return NotFound("item not exist");
-                }
-
-                Result<ItemEntity?> result = Result<ItemEntity?>.Ok(item, "success!!!");
+                Result<ItemEntity?> result = await _getItem.Execute(id);
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
             {
-                return StatusCode(500, exc.Message);
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region UpdateItem
         [HttpPut]
-        public ActionResult<Result<ItemEntity>> Update([FromBody] UpdateItemDTO input)
+        public async Task<ActionResult<Result<ItemEntity>>> Update([FromBody] UpdateItemDTO input)
         {
             try
             {
-                ItemEntity? item = _context.Item.Find(input.Id);
-                if (item == null)
-                {
-                    return NotFound("item not exist");
-                }
-
-                item.Title = input.Title;
-                item.Price = input.Price;
-                item.Quantity = input.Quantity;
-
-                _context.SaveChanges();
-
-                Result<ItemEntity> result = Result<ItemEntity>.Ok(item, "success!!!");
+                Result<ItemEntity?> result = await _upadteItem.Execute(input);
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
             {
-                return StatusCode(500, exc.Message);
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region DeleteRegion
         [HttpDelete("{id}")]
-        public ActionResult<Result<bool>> Delete(string id)
+        public async Task<ActionResult<Result<bool>>> Delete(string id)
         {
             try
             {
-                ItemEntity? item = _context.Item.Find(id);
-                if (item == null)
-                {
-                    return Result<bool>.NotFound("Item not found!!!");
-                }
-
-                _context.Item.Remove(item);
-                _context.SaveChanges();
-
-                Result<bool> result = Result<bool>.Ok(true, "Success!!!");
+                Result<bool> result = await _deleteItem.Execute(id);
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
             {
-                return StatusCode(500, exc.Message);
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
     }
+    #endregion
 }
