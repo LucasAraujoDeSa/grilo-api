@@ -14,6 +14,12 @@ namespace Grilo.Infra.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> CheckById(string id)
+        {
+            bool exist = await _context.Account.FirstOrDefaultAsync(item => item.Id == id) is not null;
+            return exist;
+        }
+
         public async Task<bool> CheckEmail(string email)
         {
             bool exist = await _context.Account.FirstOrDefaultAsync(item => item.Email == email) is not null;

@@ -1,9 +1,10 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Grilo.Api.Attributes
 {
-    public class CustomAuthorizeAttribute() : Attribute, IAuthorizationFilter
+    public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
@@ -20,6 +21,17 @@ namespace Grilo.Api.Attributes
             {
                 context.Result = new UnauthorizedResult();
                 return;
+            }
+            else
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var accountId = handler.ReadJwtToken(token).Claims.FirstOrDefault(item => item.Type == "id");
+                if (accountId is null)
+                {
+                    context.Result = new UnauthorizedResult();
+                    return;
+                }
+                context.HttpContext.Items["accountId"] = accountId.Value;
             }
         }
     }

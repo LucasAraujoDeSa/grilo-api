@@ -7,11 +7,15 @@ namespace Grilo.Domain.Entities
         public string AccountId { get; set; } = accountId;
         public AccountEntity Account { get; set; } = null!;
         public decimal Amount { get; set; } = amount;
-        public IList<OrderItemEntity> Itens { get; private set; } = [];
+        public IList<OrderItemEntity> Items { get; private set; } = [];
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public void AddItem(OrderItemEntity input)
         {
-            Itens.Add(input);
+            Items.Add(input);
+        }
+        public void RaiseAmount(decimal amount)
+        {
+            Amount += amount;
         }
     }
 }

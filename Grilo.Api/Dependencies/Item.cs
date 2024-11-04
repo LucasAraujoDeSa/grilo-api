@@ -12,7 +12,7 @@ namespace Grilo.Api.Dependencies
             builder.Services.AddTransient<CreateItem>();
             builder.Services.AddTransient<DeleteItem>();
             builder.Services.AddTransient<UpdateItem>();
-            builder.Services.AddTransient<GetAllItens>();
+            builder.Services.AddTransient<GetAllItems>();
             builder.Services.AddTransient<GetItemById>();
         }
     }

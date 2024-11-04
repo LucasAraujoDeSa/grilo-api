@@ -13,6 +13,7 @@ Database.Initialize(builder);
 Adapters.Initialize(builder);
 Account.Initialize(builder);
 Item.Initialize(builder);
+Order.Initialize(builder);
 
 var app = builder.Build();
 

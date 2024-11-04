@@ -148,7 +148,7 @@ namespace Grilo.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("Grilo.Domain.Entities.OrderEntity", "Order")
-                        .WithMany("Itens")
+                        .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -160,7 +160,7 @@ namespace Grilo.Api.Migrations
 
             modelBuilder.Entity("Grilo.Domain.Entities.OrderEntity", b =>
                 {
-                    b.Navigation("Itens");
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
