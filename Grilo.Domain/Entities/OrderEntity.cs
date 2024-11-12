@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Grilo.Domain.Entities
 {
     public class OrderEntity(string orderNo, string accountId, decimal amount)
@@ -7,7 +9,7 @@ namespace Grilo.Domain.Entities
         public string AccountId { get; set; } = accountId;
         public AccountEntity Account { get; set; } = null!;
         public decimal Amount { get; set; } = amount;
-        public IList<OrderItemEntity> Items { get; private set; } = [];
+        public IList<OrderItemEntity> Items { get; set; } = [];
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public void AddItem(OrderItemEntity input)
         {

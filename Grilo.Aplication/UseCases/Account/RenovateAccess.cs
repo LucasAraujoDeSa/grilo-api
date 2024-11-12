@@ -1,6 +1,7 @@
 using Grilo.Aplication.Adapters;
 using Grilo.Aplication.Repositories;
 using Grilo.Domain.Dtos;
+using Grilo.Domain.Entities;
 using Grilo.Shared.Utils;
 
 namespace Grilo.Aplication.UseCases.Account
@@ -21,6 +22,13 @@ namespace Grilo.Aplication.UseCases.Account
                     return Result<RefreshTokenOutputDTO?>.OperationalError("Invalid refresh token");
                 }
 
+                AccountEntity? account = await _accountRepository.GetById(id);
+
+                if (account is null)
+                {
+                    return Result<RefreshTokenOutputDTO?>.OperationalError("Account not exist");
+                }
+
                 bool tokenIsInBlackList = await _accountRepository.CheckTokenInBlackList(input.RefreshToken);
 
                 if (tokenIsInBlackList)
@@ -38,7 +46,8 @@ namespace Grilo.Aplication.UseCases.Account
                     new()
                     {
                         AccessToken = access_token,
-                        RefreshToken = refreshToken
+                        RefreshToken = refreshToken,
+                        UserName = account.Name
                     },
                     "Access Renovate success!!"
                 );

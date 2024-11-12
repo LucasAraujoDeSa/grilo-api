@@ -38,6 +38,12 @@ namespace Grilo.Infra.Repositories
             return account;
         }
 
+        public async Task<AccountEntity?> GetById(string id)
+        {
+            AccountEntity? account = await _context.Account.FirstOrDefaultAsync(item => item.Id == id);
+            return account;
+        }
+
         public async Task Save(AccountEntity input)
         {
             _context.Account.Add(input);

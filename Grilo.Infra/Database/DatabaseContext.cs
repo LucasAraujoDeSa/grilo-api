@@ -9,8 +9,11 @@ namespace Grilo.Infra.Database
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<OrderItemEntity>()
-                .HasKey(item => new { item.ItemId, item.OrderId });
+            builder.Entity<OrderItemEntity>().HasKey(ic => new
+            {
+                ic.ItemId,
+                ic.OrderId
+            });
         }
         public DbSet<ItemEntity> Item { get; set; }
         public DbSet<AccountEntity> Account { get; set; }
