@@ -5,7 +5,11 @@ using Grilo.Shared.Utils;
 
 namespace Grilo.Aplication.UseCases.Order
 {
-    public class CreateOrder(IOrderRepository repository, IItemRepository itemRepository, IAccountRepository accountRepository) : IUseCase<CreateOrderDTO, bool>
+    public class CreateOrder(
+        IOrderRepository repository, 
+        IItemRepository itemRepository, 
+        IAccountRepository accountRepository
+    ) : IUseCase<CreateOrderDTO, bool>
     {
         private readonly IOrderRepository _repository = repository;
         private readonly IItemRepository _itemRepository = itemRepository;
@@ -13,7 +17,8 @@ namespace Grilo.Aplication.UseCases.Order
 
         private async Task AddItemToOrder(
             CreateOrderItemDTO orderItem,
-            OrderEntity order
+            OrderEntity order,
+            bool hasErrorOnQuantity
         )
         {
         
@@ -21,9 +26,12 @@ namespace Grilo.Aplication.UseCases.Order
             if (currentItem is not null)
             {
                 order.RaiseAmount(currentItem.Price * orderItem.Quantity);
-                if (currentItem.Quantity <= orderItem.Quantity)
+                if (
+                    currentItem.Quantity == 0 || 
+                    orderItem.Quantity > currentItem.Quantity || 
+                    orderItem.Quantity < 0)
                 {
-                    // to be implemented
+                    hasErrorOnQuantity = true;
                 }
                 order.Items.Add(new(
                     itemId: currentItem.Id,
@@ -52,12 +60,17 @@ namespace Grilo.Aplication.UseCases.Order
                 { };
 
                 IList<Task> orderItemsTasks = [];
+                bool hasErrorOnQuantity = false;
 
                 foreach(CreateOrderItemDTO orderItem in input.OrderItems){
-                    orderItemsTasks.Add(AddItemToOrder(orderItem, newOrder));
+                    orderItemsTasks.Add(AddItemToOrder(orderItem, newOrder, hasErrorOnQuantity));
                 }
 
                 await Task.WhenAll(orderItemsTasks);
+
+                if(hasErrorOnQuantity){
+                    return Result<bool>.OperationalError("Items quantity invalid");
+                }
 
                 if (newOrder.Items.Count != input.OrderItems.Count)
                 {
