@@ -11,31 +11,27 @@ namespace Grilo.Aplication.UseCases.Order
         private readonly IItemRepository _itemRepository = itemRepository;
         private readonly IAccountRepository _accountRepository = accountRepository;
 
-        private async Task<bool> AddItemsToOrder(
-            IList<CreateOrderItemDTO> orderItems,
+        private async Task AddItemToOrder(
+            CreateOrderItemDTO orderItem,
             OrderEntity order
         )
         {
-            foreach (var item in orderItems)
+        
+            ItemEntity? currentItem = await _itemRepository.GetById(orderItem.ItemId);
+            if (currentItem is not null)
             {
-                ItemEntity? currentItem = await _itemRepository.GetById(item.ItemId);
-                if (currentItem is not null)
+                order.RaiseAmount(currentItem.Price * orderItem.Quantity);
+                if (currentItem.Quantity <= orderItem.Quantity)
                 {
-                    order.RaiseAmount(currentItem.Price * item.Quantity);
-                    if (currentItem.Quantity <= item.Quantity)
-                    {
-                        return false;
-                    }
-                    order.Items.Add(new(
-                        itemId: currentItem.Id,
-                        orderId: order.Id,
-                        quantity: item.Quantity
-                    )
-                    { });
+                    // to be implemented
                 }
+                order.Items.Add(new(
+                    itemId: currentItem.Id,
+                    orderId: order.Id,
+                    quantity: orderItem.Quantity
+                )
+                { });
             }
-
-            return true;
         }
         public async Task<Result<bool>> Execute(CreateOrderDTO input)
         {
@@ -55,12 +51,13 @@ namespace Grilo.Aplication.UseCases.Order
                 )
                 { };
 
-                bool quantityIsCorrect = await AddItemsToOrder(input.OrderItems, newOrder);
+                IList<Task> orderItemsTasks = [];
 
-                if (!quantityIsCorrect)
-                {
-                    return Result<bool>.OperationalError("Quantity informed is invalid!");
+                foreach(CreateOrderItemDTO orderItem in input.OrderItems){
+                    orderItemsTasks.Add(AddItemToOrder(orderItem, newOrder));
                 }
+
+                await Task.WhenAll(orderItemsTasks);
 
                 if (newOrder.Items.Count != input.OrderItems.Count)
                 {
