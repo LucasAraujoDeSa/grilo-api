@@ -7,5 +7,7 @@ namespace Grilo.Aplication.Repositories
     {
         Task Save(OrderEntity input);
         Task<IEnumerable<GetAllOrdersOutputDTO>> GetAll();
+        Task<OrderEntity?> GetById(string id);
+        Task Update(OrderEntity input);
     }
 }

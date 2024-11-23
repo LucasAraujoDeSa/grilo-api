@@ -11,6 +11,7 @@ namespace Grilo.Api.Dependencies
             builder.Services.AddTransient<IOrderRepository, OrderRepository>();
             builder.Services.AddTransient<CreateOrder>();
             builder.Services.AddTransient<GetAllOrders>();
+            builder.Services.AddTransient<MarkAsDone>();
         }
     }
 }

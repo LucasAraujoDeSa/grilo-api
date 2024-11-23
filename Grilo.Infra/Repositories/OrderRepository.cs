@@ -25,6 +25,7 @@ namespace Grilo.Infra.Repositories
                 OrderNo = item.OrderNo,
                 Amount = item.Amount,
                 CreatedAt = item.CreatedAt,
+                Status = item.Status,
                 Items = item.Items.Select(row => new GetAllOrdersItemDTO()
                 {
                     Id = row.Item.Id,
@@ -35,9 +36,24 @@ namespace Grilo.Infra.Repositories
             });
         }
 
+        public async Task<OrderEntity?> GetById(string id)
+        {
+            OrderEntity? result = await _context.Order
+                .Include(row => row.Items)
+                .ThenInclude(item => item.Item)
+                .FirstOrDefaultAsync(item => item.Id == id);
+            return result;
+        }
+
         public async Task Save(OrderEntity input)
         {
             _context.Order.Add(input);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Update(OrderEntity input)
+        {
+            _context.Order.Update(input);
             await _context.SaveChangesAsync();
         }
     }

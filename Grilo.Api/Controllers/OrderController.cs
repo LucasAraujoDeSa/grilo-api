@@ -11,10 +11,11 @@ namespace Grilo.Api.Controllers
     [ApiController]
     [CustomAuthorizeAttribute]
     [Route("api/[controller]")]
-    public class OrderController(CreateOrder createOrder, GetAllOrders getAllOrders) : ControllerBase
+    public class OrderController(CreateOrder createOrder, GetAllOrders getAllOrders, MarkAsDone markAsDone) : ControllerBase
     {
         private readonly CreateOrder _createOrder = createOrder;
         private readonly GetAllOrders _getAllOrders = getAllOrders;
+        private readonly MarkAsDone _markAsDone = markAsDone;
 
         [HttpPost]
         public async Task<ActionResult<Result<bool>>> CreateOrder([FromBody] IList<RequestCreateOrderDTO> input)
@@ -48,6 +49,20 @@ namespace Grilo.Api.Controllers
             try
             {
                 Result<IEnumerable<GetAllOrdersOutputDTO>?> result = await _getAllOrders.Execute();
+                return StatusCode(StatusCodeHelper.Get(result.Status), result);
+            }
+            catch (Exception exc)
+            {
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
+            }
+        }
+
+        [HttpPatch("marskAsDone/{id}")]
+        public async Task<ActionResult<Result<bool>>> MarkAsDone(string id)
+        {
+            try
+            {
+                Result<bool> result = await _markAsDone.Execute(id);
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
