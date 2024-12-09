@@ -6,8 +6,8 @@ using Grilo.Shared.Utils;
 namespace Grilo.Aplication.UseCases.Order
 {
     public class CreateOrder(
-        IOrderRepository repository, 
-        IItemRepository itemRepository, 
+        IOrderRepository repository,
+        IItemRepository itemRepository,
         IAccountRepository accountRepository
     ) : IUseCase<CreateOrderDTO, bool>
     {
@@ -18,20 +18,20 @@ namespace Grilo.Aplication.UseCases.Order
         private async Task AddItemToOrder(
             CreateOrderItemDTO orderItem,
             OrderEntity order,
-            bool hasErrorOnQuantity
+            IList<string> hasErrorOnQuantity
         )
         {
-        
+
             ItemEntity? currentItem = await _itemRepository.GetById(orderItem.ItemId);
             if (currentItem is not null)
             {
                 order.RaiseAmount(currentItem.Price * orderItem.Quantity);
                 if (
-                    currentItem.Quantity == 0 || 
-                    orderItem.Quantity > currentItem.Quantity || 
+                    currentItem.Quantity == 0 ||
+                    orderItem.Quantity > currentItem.Quantity ||
                     orderItem.Quantity < 0)
                 {
-                    hasErrorOnQuantity = true;
+                    hasErrorOnQuantity.Add($"invalid quantity for {currentItem.Title}");
                 }
                 order.Items.Add(new(
                     itemId: currentItem.Id,
@@ -45,12 +45,17 @@ namespace Grilo.Aplication.UseCases.Order
         {
             try
             {
-                if (!input.OrderItems.Any())
+                if (input.OrderItems.Count == 0)
                 {
                     return Result<bool>.NoContent(true, "no item informed");
                 }
 
                 bool accountExist = await _accountRepository.CheckById(input.AccountId);
+
+                if (!accountExist)
+                {
+                    return Result<bool>.OperationalError("Account not exist");
+                }
 
                 OrderEntity newOrder = new(
                     orderNo: Guid.NewGuid().ToString(),
@@ -59,24 +64,23 @@ namespace Grilo.Aplication.UseCases.Order
                 )
                 { };
 
-                IList<Task> orderItemsTasks = [];
-                bool hasErrorOnQuantity = false;
+                IList<string> ErrorsList = [];
 
-                foreach(CreateOrderItemDTO orderItem in input.OrderItems){
-                    orderItemsTasks.Add(AddItemToOrder(orderItem, newOrder, hasErrorOnQuantity));
-                }
+                await Task.WhenAll(
+                    input.OrderItems.Select(item =>
+                        AddItemToOrder(item, newOrder, ErrorsList)
+                    ).ToList()
+                );
 
-                await Task.WhenAll(orderItemsTasks);
-
-                if(hasErrorOnQuantity){
-                    return Result<bool>.OperationalError("Items quantity invalid");
+                if (ErrorsList.Any())
+                {
+                    return Result<bool>.OperationalError(ErrorsList.First());
                 }
 
                 if (newOrder.Items.Count != input.OrderItems.Count)
                 {
                     return Result<bool>.NotFound("One of the informed items does not exist");
                 }
-
 
                 await _repository.Save(newOrder);
 

@@ -1,11 +1,20 @@
 using Grilo.Aplication.Repositories;
 using Grilo.Domain.Entities;
+using Grilo.Test.Mocks.Item;
 
 namespace Grilo.Test.Repositories
 {
     public class ItemRepositoryInMemory : IItemRepository
     {
         private IList<ItemEntity> _data = [];
+        public void Populate()
+        {
+            for (int index = 1; index <= 10; index++)
+            {
+                var mock = ItemEntityMock.GenerateMock(index);
+                _data.Add(mock);
+            }
+        }
         public async Task<bool> CheckTitle(string title)
         {
             return await Task.FromResult(_data.FirstOrDefault(item => item.Title == title) is not null);
@@ -14,7 +23,8 @@ namespace Grilo.Test.Repositories
         public async Task<bool> Delete(string id)
         {
             ItemEntity? item = _data.FirstOrDefault(item => item.Id == id);
-            if(item is not null){
+            if (item is not null)
+            {
                 _data.Remove(item);
                 return await Task.FromResult(true);
             }
@@ -41,7 +51,8 @@ namespace Grilo.Test.Repositories
         public async Task Update(ItemEntity input)
         {
             ItemEntity? item = _data.FirstOrDefault(item => item.Id == input.Id);
-            if(item is not null){
+            if (item is not null)
+            {
                 item.Price = input.Price;
                 item.Quantity = input.Quantity;
                 item.Title = input.Title;
