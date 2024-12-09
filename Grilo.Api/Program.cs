@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
 using Grilo.Api.Config;
 using Grilo.Api.Dependencies;
+using Grilo.Shared.Models.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +8,7 @@ Cors.Configure(builder);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 Swagger.Configure(builder);
 
 Database.Initialize(builder);

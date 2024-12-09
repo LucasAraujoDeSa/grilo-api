@@ -2,14 +2,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Grilo.Aplication.Adapters;
-using Microsoft.Extensions.Configuration;
+using Grilo.Shared.Models.Settings;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Grilo.Infra.Adapters
 {
-    public class Encrypter(IConfiguration configuration) : IEncrypter
+    public class Encrypter(IOptions<ApiSettings> settings) : IEncrypter
     {
-        private IConfiguration _configuration { get; set; } = configuration;
+        private ApiSettings _settings { get; set; } = settings.Value;
         public bool Compare(string plaintext, string hash)
         {
             bool isCorrect = BCrypt.Net.BCrypt.Verify(plaintext, hash);
@@ -19,7 +20,7 @@ namespace Grilo.Infra.Adapters
         public string? DecodeRefreshToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var secret = _configuration["Keys:Auth"];
+            var secret = _settings.Keys.Auth;
             if (secret is null) return null;
             var key = Encoding.ASCII.GetBytes(secret);
             tokenHandler.ValidateToken(token, new TokenValidationParameters
@@ -41,7 +42,7 @@ namespace Grilo.Infra.Adapters
         public string GenerateAccessToken(string id)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var secret = _configuration["Keys:Auth"];
+            var secret = _settings.Keys.Auth;
             var key = Encoding.ASCII.GetBytes(secret is not null ? secret : string.Empty);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -62,7 +63,7 @@ namespace Grilo.Infra.Adapters
         public string GenerateRefreshToken(string id)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var secret = _configuration["Keys:Auth"];
+            var secret = _settings.Keys.Auth;
             var key = Encoding.ASCII.GetBytes(secret is not null ? secret : string.Empty);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
