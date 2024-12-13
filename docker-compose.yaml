@@ -6,5 +6,6 @@ services:
       - POSTGRES_USER=grilo
       - POSTGRES_PASSWORD=griloPass
       - POSTGRES_DB=grilo
+    restart: always
     ports:
       - "5432:5432"

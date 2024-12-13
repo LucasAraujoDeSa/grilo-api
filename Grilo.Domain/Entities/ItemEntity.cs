@@ -6,5 +6,9 @@ namespace Grilo.Domain.Entities
         public string Title { get; set; } = title;
         public decimal Price { get; set; } = price;
         public int Quantity { get; set; } = quantity;
+        public void DecreaseQuantity(int quantity)
+        {
+            Quantity -= quantity;
+        }
     }
 }

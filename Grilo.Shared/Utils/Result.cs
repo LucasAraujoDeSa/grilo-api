@@ -12,6 +12,11 @@ namespace Grilo.Shared.Utils
             return new Result<T> { IsSuccess = true, Content = content, Message = message, Status = "CREATED" };
         }
 
+        public static Result<T> NoContent(T content, string message)
+        {
+            return new Result<T> { IsSuccess = true, Content = content, Message = message, Status = "NO_CONTENT" };
+        }
+
         public static Result<T> NotFound(string message)
         {
             return new Result<T> { IsSuccess = false, Content = default, Message = message, Status = "NOT_FOUND" };
@@ -27,9 +32,24 @@ namespace Grilo.Shared.Utils
             return new Result<T> { IsSuccess = false, Content = default, Message = message, Status = "OPERATIONAL_ERROR" };
         }
 
+        public static Result<T> Unauthorized()
+        {
+            return new Result<T> { IsSuccess = false, Content = default, Message = "unauthorized", Status = "UNAUTHORIZED" };
+        }
+
         public static Result<T> InternalError(string message)
         {
             return new Result<T> { IsSuccess = false, Content = default, Message = message, Status = "INTERNAL_ERROR" };
+        }
+
+        public static Result<T> Success()
+        {
+            return new Result<T> { IsSuccess = true, Content = default, Message = "Success", Status = "SUCCESS" };
+        }
+
+        public static Result<T> Fail(string Message)
+        {
+            return new Result<T> { IsSuccess = false, Content = default, Message = "Fail", Status = "FAIL" };
         }
     }
 }

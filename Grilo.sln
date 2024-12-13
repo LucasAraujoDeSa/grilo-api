@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Shared", "Grilo.Share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Aplication", "Grilo.Aplication\Grilo.Aplication.csproj", "{57F2F5CF-230B-4EAD-AD92-27633359682B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grilo.Test", "Grilo.Test\Grilo.Test.csproj", "{E767640C-4F80-4A21-8205-F97DA2E9AC1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{57F2F5CF-230B-4EAD-AD92-27633359682B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F2F5CF-230B-4EAD-AD92-27633359682B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F2F5CF-230B-4EAD-AD92-27633359682B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E767640C-4F80-4A21-8205-F97DA2E9AC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E767640C-4F80-4A21-8205-F97DA2E9AC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E767640C-4F80-4A21-8205-F97DA2E9AC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E767640C-4F80-4A21-8205-F97DA2E9AC1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

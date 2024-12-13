@@ -67,6 +67,56 @@ namespace Grilo.Api.Migrations
                     b.ToTable("Item");
                 });
 
+            modelBuilder.Entity("Grilo.Domain.Entities.OrderEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OrderNo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("Grilo.Domain.Entities.OrderItemEntity", b =>
+                {
+                    b.Property<string>("ItemId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ItemId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
+                });
+
             modelBuilder.Entity("Grilo.Domain.Entities.TokenBlackListEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -82,6 +132,41 @@ namespace Grilo.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TokenBlackList");
+                });
+
+            modelBuilder.Entity("Grilo.Domain.Entities.OrderEntity", b =>
+                {
+                    b.HasOne("Grilo.Domain.Entities.AccountEntity", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("Grilo.Domain.Entities.OrderItemEntity", b =>
+                {
+                    b.HasOne("Grilo.Domain.Entities.ItemEntity", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Grilo.Domain.Entities.OrderEntity", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Grilo.Domain.Entities.OrderEntity", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

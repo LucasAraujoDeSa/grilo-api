@@ -9,20 +9,20 @@ using Grilo.Aplication.UseCases.Item;
 namespace Grilo.Api.Controllers
 {
     [ApiController]
-    [CustomAuthorizeAttribute()]
+    [CustomAuthorizeAttribute]
     [Route("api/[controller]")]
     public class ItemController(
         CreateItem createItem,
         UpdateItem upadteItem,
         DeleteItem deleteItem,
-        GetAllItens getAllItens,
+        GetAllItems getAllItems,
         GetItemById getItem
     ) : ControllerBase
     {
         private readonly CreateItem _createItem = createItem;
         private readonly UpdateItem _upadteItem = upadteItem;
         private readonly DeleteItem _deleteItem = deleteItem;
-        private readonly GetAllItens _getAllItens = getAllItens;
+        private readonly GetAllItems _getAllItems = getAllItems;
         private readonly GetItemById _getItem = getItem;
 
         #region CreateItem
@@ -41,13 +41,13 @@ namespace Grilo.Api.Controllers
         }
         #endregion
 
-        #region GetAllItens
+        #region GetAllItems
         [HttpGet]
         public async Task<ActionResult<Result<IEnumerable<ItemEntity>>>> GetAll()
         {
             try
             {
-                Result<IEnumerable<ItemEntity>?> result = await _getAllItens.Execute();
+                Result<IEnumerable<ItemEntity>?> result = await _getAllItems.Execute();
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)

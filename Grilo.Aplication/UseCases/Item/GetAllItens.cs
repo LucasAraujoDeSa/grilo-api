@@ -4,7 +4,7 @@ using Grilo.Shared.Utils;
 
 namespace Grilo.Aplication.UseCases.Item
 {
-    public class GetAllItens(IItemRepository repository) : IUseCase<IEnumerable<ItemEntity>>
+    public class GetAllItems(IItemRepository repository) : IUseCase<IEnumerable<ItemEntity>>
     {
         private readonly IItemRepository _repository = repository;
         public async Task<Result<IEnumerable<ItemEntity>?>> Execute()

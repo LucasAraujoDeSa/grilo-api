@@ -7,7 +7,7 @@ namespace Grilo.Api.Dependencies
     {
         public static void Initialize(WebApplicationBuilder builder)
         {
-            string connectionString = builder.Configuration["Database:ConnectionString"] ?? throw new Exception("Connection string required");
+            string connectionString = builder.Configuration["ApiSettings:Database:ConnectionString"] ?? throw new Exception("Connection string required");
             builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
         }
     }
