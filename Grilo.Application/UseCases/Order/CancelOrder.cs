@@ -5,10 +5,9 @@ using Grilo.Shared.Utils;
 
 namespace Grilo.Application.UseCases.Order
 {
-    public class MarkAsDone(IOrderRepository repository) : IUseCase<string, bool>
+    public class CancelOrder(IOrderRepository repository) : IUseCase<string, bool>
     {
         private readonly IOrderRepository _repository = repository;
-
         public async Task<Result<bool>> Execute(string id)
         {
             try
@@ -24,13 +23,7 @@ namespace Grilo.Application.UseCases.Order
                 if (order.Status != inProgressStatus)
                     return Result<bool>.OperationalError("Cannot change order with status different from IN PROGRESS");
 
-                order.SetAsDone();
-
-                foreach (OrderItemEntity orderItem in order.Items)
-                {
-                    int quantity = orderItem.Quantity;
-                    orderItem.Item.DecreaseQuantity(quantity);
-                }
+                order.SetCancelOrder();
 
                 await _repository.Update(order);
 

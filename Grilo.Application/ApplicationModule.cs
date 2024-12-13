@@ -26,6 +26,7 @@ namespace Grilo.Application
             services.AddTransient<GetAllOrders>();
             services.AddTransient<MarkAsDone>();
             services.AddTransient<UpdateOrder>();
+            services.AddTransient<CancelOrder>();
         }
     }
 }
