@@ -1,5 +1,5 @@
 using Grilo.Aplication.Repositories;
-using Grilo.Domain.Dtos.Order;
+using Grilo.Domain.Dtos.Order.CreateOrder;
 using Grilo.Domain.Entities;
 using Grilo.Shared.Utils;
 
@@ -15,32 +15,6 @@ namespace Grilo.Aplication.UseCases.Order
         private readonly IItemRepository _itemRepository = itemRepository;
         private readonly IAccountRepository _accountRepository = accountRepository;
 
-        private async Task AddItemToOrder(
-            CreateOrderItemDTO orderItem,
-            OrderEntity order,
-            IList<string> hasErrorOnQuantity
-        )
-        {
-
-            ItemEntity? currentItem = await _itemRepository.GetById(orderItem.ItemId);
-            if (currentItem is not null)
-            {
-                order.RaiseAmount(currentItem.Price * orderItem.Quantity);
-                if (
-                    currentItem.Quantity == 0 ||
-                    orderItem.Quantity > currentItem.Quantity ||
-                    orderItem.Quantity < 0)
-                {
-                    hasErrorOnQuantity.Add($"invalid quantity for {currentItem.Title}");
-                }
-                order.Items.Add(new(
-                    itemId: currentItem.Id,
-                    orderId: order.Id,
-                    quantity: orderItem.Quantity
-                )
-                { });
-            }
-        }
         public async Task<Result<bool>> Execute(CreateOrderDTO input)
         {
             try
@@ -64,22 +38,44 @@ namespace Grilo.Aplication.UseCases.Order
                 )
                 { };
 
+                IList<ItemEntity> items = await _itemRepository.GetItems(
+                    input.OrderItems.Select(item => item.ItemId).ToList()
+                );
+
+                if (items.Count < input.OrderItems.Count)
+                {
+                    return Result<bool>.OperationalError("One of the informed items does not exist");
+                }
+
                 IList<string> ErrorsList = [];
 
-                await Task.WhenAll(
-                    input.OrderItems.Select(item =>
-                        AddItemToOrder(item, newOrder, ErrorsList)
-                    ).ToList()
-                );
+                IList<AddOrderItemToOrder> orderItems = items.Zip(input.OrderItems, (item, orderItem) =>
+                    new AddOrderItemToOrder()
+                    {
+                        ItemId = item.Id,
+                        ItemTitle = item.Title,
+                        ItemPrice = item.Price,
+                        ItemQuantity = item.Quantity,
+                        OrderItemQuantity = orderItem.Quantity
+                    }
+                ).ToList();
+
+                foreach (var orderItem in orderItems)
+                {
+                    var addItemResult = newOrder.AddItemToOrder(orderItem);
+                    if (
+                        !addItemResult.IsSuccess
+                        &&
+                        addItemResult.Message is not null
+                    )
+                    {
+                        return Result<bool>.OperationalError(addItemResult.Message);
+                    }
+                }
 
                 if (ErrorsList.Any())
                 {
                     return Result<bool>.OperationalError(ErrorsList.First());
-                }
-
-                if (newOrder.Items.Count != input.OrderItems.Count)
-                {
-                    return Result<bool>.NotFound("One of the informed items does not exist");
                 }
 
                 await _repository.Save(newOrder);

@@ -1,4 +1,4 @@
-namespace Grilo.Domain.Dtos.Order
+namespace Grilo.Domain.Dtos.Order.CreateOrder
 {
     public class CreateOrderDTO
     {
