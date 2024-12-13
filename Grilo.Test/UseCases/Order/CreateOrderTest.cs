@@ -51,7 +51,7 @@ namespace Grilo.Test.UseCases.Order
             _itemRepository.Populate();
             var items = await _itemRepository.Get();
 
-            input.OrderItems = items.Select(item => new CreateOrderItemDTO()
+            input.OrderItems = items.Select(item => new OrderItemDTO()
             {
                 ItemId = item.Id,
                 Quantity = item.Quantity + 10
@@ -95,7 +95,7 @@ namespace Grilo.Test.UseCases.Order
             _itemRepository.Populate();
             var items = await _itemRepository.Get();
 
-            input.OrderItems = items.Select(item => new CreateOrderItemDTO()
+            input.OrderItems = items.Select(item => new OrderItemDTO()
             {
                 ItemId = item.Id,
                 Quantity = item.Quantity - 1

@@ -1,7 +1,7 @@
 using Grilo.Api.Attributes;
 using Grilo.Api.Helper;
 using Grilo.Application.UseCases.Order;
-using Grilo.Domain.Dtos.Order.CreateOrder;
+using Grilo.Domain.Dtos.Order;
 using Grilo.Domain.Dtos.Order.GetAllOrders;
 using Grilo.Shared.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace Grilo.Api.Controllers
         private readonly MarkAsDone _markAsDone = markAsDone;
 
         [HttpPost]
-        public async Task<ActionResult<Result<bool>>> CreateOrder([FromBody] IList<RequestCreateOrderDTO> input)
+        public async Task<ActionResult<Result<bool>>> CreateOrder([FromBody] IList<OrderItemDTO> input)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace Grilo.Api.Controllers
                 Result<bool> result = await _createOrder.Execute(new()
                 {
                     AccountId = accountId,
-                    OrderItems = input.Select(item => new CreateOrderItemDTO()
+                    OrderItems = input.Select(item => new OrderItemDTO()
                     {
                         ItemId = item.ItemId,
                         Quantity = item.Quantity
