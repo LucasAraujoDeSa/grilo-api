@@ -1,9 +1,9 @@
-using Grilo.Aplication.Repositories;
+using Grilo.Application.Repositories;
 using Grilo.Domain.Dtos.Order.CreateOrder;
 using Grilo.Domain.Entities;
 using Grilo.Shared.Utils;
 
-namespace Grilo.Aplication.UseCases.Order
+namespace Grilo.Application.UseCases.Order
 {
     public class CreateOrder(
         IOrderRepository repository,

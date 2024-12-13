@@ -1,6 +1,6 @@
 using Grilo.Api.Attributes;
 using Grilo.Api.Helper;
-using Grilo.Aplication.UseCases.Order;
+using Grilo.Application.UseCases.Order;
 using Grilo.Domain.Dtos.Order.CreateOrder;
 using Grilo.Domain.Dtos.Order.GetAllOrders;
 using Grilo.Shared.Utils;

@@ -1,5 +1,5 @@
-using Grilo.Aplication.Repositories;
-using Grilo.Aplication.UseCases.Item;
+using Grilo.Application.Repositories;
+using Grilo.Application.UseCases.Item;
 using Grilo.Infra.Repositories;
 
 namespace Grilo.Api.Dependencies

@@ -1,4 +1,4 @@
-using Grilo.Aplication.Adapters;
+using Grilo.Application.Adapters;
 using Grilo.Infra.Adapters;
 
 namespace Grilo.Api.Dependencies

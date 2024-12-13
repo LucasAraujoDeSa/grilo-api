@@ -1,7 +1,7 @@
 using Grilo.Domain.Dtos.Order.GetAllOrders;
 using Grilo.Domain.Entities;
 
-namespace Grilo.Aplication.Repositories
+namespace Grilo.Application.Repositories
 {
     public interface IOrderRepository
     {
