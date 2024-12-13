@@ -1,4 +1,6 @@
+using Grilo.Domain.Dtos.Order.CreateOrder;
 using Grilo.Domain.Enums;
+using Grilo.Shared.Utils;
 
 namespace Grilo.Domain.Entities
 {
@@ -14,10 +16,6 @@ namespace Grilo.Domain.Entities
         public string Status { get; set; } = OrderStatusEnum.IN_PROGRESS.ToString();
         public bool IsActive { get; set; } = true;
 
-        public void AddItem(OrderItemEntity input)
-        {
-            Items.Add(input);
-        }
         public void RaiseAmount(decimal amount)
         {
             Amount += amount;
@@ -38,6 +36,27 @@ namespace Grilo.Domain.Entities
         {
             Status = OrderStatusEnum.CANCEL.ToString();
             IsActive = false;
+        }
+
+        public Result<bool> AddItemToOrder(
+            AddOrderItemToOrder orderItem
+        )
+        {
+            RaiseAmount(orderItem.ItemPrice * orderItem.OrderItemQuantity);
+            if (
+                orderItem.ItemQuantity == 0 ||
+                orderItem.OrderItemQuantity > orderItem.ItemQuantity ||
+                orderItem.OrderItemQuantity < 0)
+            {
+                return Result<bool>.Fail($"invalid quantity for {orderItem.ItemTitle}");
+            }
+            Items.Add(new(
+                itemId: orderItem.ItemId,
+                orderId: Id,
+                quantity: orderItem.OrderItemQuantity
+            )
+            { });
+            return Result<bool>.Success();
         }
     }
 }
