@@ -36,6 +36,14 @@ namespace Grilo.Infra.Repositories
             return result;
         }
 
+        public async Task<IList<ItemEntity>> GetItems(IList<string> itemsId)
+        {
+            IList<ItemEntity> items = await _context.Item.Where(
+                item => itemsId.Contains(item.Id)
+            ).ToListAsync();
+            return items;
+        }
+
         public async Task Save(ItemEntity input)
         {
             _context.Item.Add(input);
