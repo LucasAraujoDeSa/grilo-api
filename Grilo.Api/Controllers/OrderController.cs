@@ -3,6 +3,7 @@ using Grilo.Api.Helper;
 using Grilo.Application.UseCases.Order;
 using Grilo.Domain.Dtos.Order;
 using Grilo.Domain.Dtos.Order.GetAllOrders;
+using Grilo.Domain.Dtos.Order.UpdateOrder;
 using Grilo.Shared.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,17 @@ namespace Grilo.Api.Controllers
     [ApiController]
     [CustomAuthorizeAttribute]
     [Route("api/[controller]")]
-    public class OrderController(CreateOrder createOrder, GetAllOrders getAllOrders, MarkAsDone markAsDone) : ControllerBase
+    public class OrderController(
+        CreateOrder createOrder,
+        GetAllOrders getAllOrders,
+        MarkAsDone markAsDone,
+        UpdateOrder updateOrder
+    ) : ControllerBase
     {
         private readonly CreateOrder _createOrder = createOrder;
         private readonly GetAllOrders _getAllOrders = getAllOrders;
         private readonly MarkAsDone _markAsDone = markAsDone;
+        private readonly UpdateOrder _updateOrder = updateOrder;
 
         #region "CreateOrder"
         [HttpPost]
@@ -36,6 +43,22 @@ namespace Grilo.Api.Controllers
                         Quantity = item.Quantity
                     }).ToList()
                 });
+                return StatusCode(StatusCodeHelper.Get(result.Status), result);
+            }
+            catch (Exception exc)
+            {
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
+            }
+        }
+        #endregion
+
+        #region "UpdateOrder"
+        [HttpPut]
+        public async Task<ActionResult<Result<bool>>> UpdateOrder([FromBody] UpdateOrderDTO input)
+        {
+            try
+            {
+                Result<bool> result = await _updateOrder.Execute(input);
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
