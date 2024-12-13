@@ -17,6 +17,7 @@ namespace Grilo.Api.Controllers
         private readonly GetAllOrders _getAllOrders = getAllOrders;
         private readonly MarkAsDone _markAsDone = markAsDone;
 
+        #region "CreateOrder"
         [HttpPost]
         public async Task<ActionResult<Result<bool>>> CreateOrder([FromBody] IList<OrderItemDTO> input)
         {
@@ -42,9 +43,11 @@ namespace Grilo.Api.Controllers
                 return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region "GetAllOrders"
         [HttpGet]
-        public async Task<ActionResult<Result<IEnumerable<GetAllOrdersOutputDTO>?>>> GetAll()
+        public async Task<ActionResult<Result<IEnumerable<GetAllOrdersOutputDTO>?>>> GetAllOrders()
         {
             try
             {
@@ -56,9 +59,11 @@ namespace Grilo.Api.Controllers
                 return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region "MarkOrderAsDone"
         [HttpPatch("marskAsDone/{id}")]
-        public async Task<ActionResult<Result<bool>>> MarkAsDone(string id)
+        public async Task<ActionResult<Result<bool>>> MarkOrderAsDone(string id)
         {
             try
             {
@@ -70,5 +75,6 @@ namespace Grilo.Api.Controllers
                 return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
     }
 }

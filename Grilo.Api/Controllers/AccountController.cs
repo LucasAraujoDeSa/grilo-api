@@ -14,6 +14,7 @@ namespace Grilo.Api.Controllers
         private readonly SignIn _signin = signin;
         private readonly RenovateAccess _renovateAccess = renovateAccess;
 
+        #region Singup
         [HttpPost("Singup")]
         public async Task<ActionResult<Result<SignupOutputDTO>>> Signup([FromBody] SignupInputDTO input)
         {
@@ -27,7 +28,9 @@ namespace Grilo.Api.Controllers
                 return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region Signin
         [HttpPost("Signin")]
         public async Task<ActionResult<Result<SigninOutputDTO>>> Signin([FromBody] SigninInputDTO input)
         {
@@ -41,7 +44,9 @@ namespace Grilo.Api.Controllers
                 return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
 
+        #region RefreshToken
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<Result<RefreshTokenOutputDTO>>> RefreshToken([FromBody] RefreshTokenInputDTO input)
         {
@@ -55,5 +60,6 @@ namespace Grilo.Api.Controllers
                 return StatusCode(500, Result<object>.InternalError(exc.Message));
             }
         }
+        #endregion
     }
 }
