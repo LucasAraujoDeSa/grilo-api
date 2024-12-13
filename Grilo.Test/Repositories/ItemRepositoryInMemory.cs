@@ -60,5 +60,13 @@ namespace Grilo.Test.Repositories
 
             await Task.CompletedTask;
         }
+
+        public async Task<IList<ItemEntity>> GetItems(IList<string> itemsId)
+        {
+            IList<ItemEntity> items = _data.Where(
+                item => itemsId.Contains(item.Id)
+            ).ToList();
+            return await Task.FromResult(items);
+        }
     }
 }

@@ -1,5 +1,6 @@
 using Grilo.Aplication.UseCases.Order;
 using Grilo.Domain.Dtos.Order;
+using Grilo.Domain.Dtos.Order.CreateOrder;
 using Grilo.Domain.Entities;
 using Grilo.Test.Mocks.Account;
 using Grilo.Test.Mocks.order;
@@ -80,7 +81,7 @@ namespace Grilo.Test.UseCases.Order
 
             var result = await sut.Execute(input);
 
-            Assert.Equal("NOT_FOUND", result.Status);
+            Assert.Equal("OPERATIONAL_ERROR", result.Status);
             Assert.False(result.IsSuccess);
         }
 
