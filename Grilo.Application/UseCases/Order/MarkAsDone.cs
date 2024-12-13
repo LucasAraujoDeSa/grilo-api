@@ -20,11 +20,9 @@ namespace Grilo.Application.UseCases.Order
                     return Result<bool>.NotFound("Order not exist");
                 }
 
-                string doneStatus = OrderStatusEnum.DONE.ToString();
-                if (order.Status == doneStatus)
-                {
-                    return Result<bool>.OperationalError("Order already marked as done!");
-                }
+                string inProgressStatus = OrderStatusEnum.IN_PROGRESS.ToString();
+                if (order.Status != inProgressStatus)
+                    return Result<bool>.OperationalError("Cannot change order with status different from IN PROGRESS");
 
                 order.SetAsDone();
 
