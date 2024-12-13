@@ -1,8 +1,8 @@
-using Grilo.Aplication.Repositories;
+using Grilo.Application.Repositories;
 using Grilo.Domain.Dtos.Order.GetAllOrders;
 using Grilo.Shared.Utils;
 
-namespace Grilo.Aplication.UseCases.Order
+namespace Grilo.Application.UseCases.Order
 {
     public class GetAllOrders(IOrderRepository repository) : IUseCase<IEnumerable<GetAllOrdersOutputDTO>?>
     {

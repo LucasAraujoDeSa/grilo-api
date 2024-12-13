@@ -1,9 +1,9 @@
-using Grilo.Aplication.Repositories;
+using Grilo.Application.Repositories;
 using Grilo.Domain.Entities;
 using Grilo.Domain.Enums;
 using Grilo.Shared.Utils;
 
-namespace Grilo.Aplication.UseCases.Order
+namespace Grilo.Application.UseCases.Order
 {
     public class MarkAsDone(IOrderRepository repository) : IUseCase<string, bool>
     {

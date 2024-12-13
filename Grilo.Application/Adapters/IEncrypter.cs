@@ -1,4 +1,4 @@
-namespace Grilo.Aplication.Adapters
+namespace Grilo.Application.Adapters
 {
     public interface IEncrypter
     {

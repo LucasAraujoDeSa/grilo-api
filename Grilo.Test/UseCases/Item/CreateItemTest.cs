@@ -1,5 +1,5 @@
-using Grilo.Aplication.Repositories;
-using Grilo.Aplication.UseCases.Item;
+using Grilo.Application.Repositories;
+using Grilo.Application.UseCases.Item;
 using Grilo.Domain.Dtos;
 using Grilo.Test.Mocks.Item;
 using Grilo.Test.Repositories;
@@ -8,7 +8,8 @@ namespace Grilo.Test.UseCases.Item
 {
     public class CreateItemTest
     {
-        public static CreateItem MakeSut(){
+        public static CreateItem MakeSut()
+        {
             IItemRepository itemRepo = new ItemRepositoryInMemory();
             CreateItem sut = new(itemRepo);
             return sut;

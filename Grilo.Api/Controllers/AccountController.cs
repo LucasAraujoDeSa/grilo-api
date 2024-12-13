@@ -2,7 +2,7 @@ using Grilo.Domain.Dtos;
 using Grilo.Api.Helper;
 using Grilo.Shared.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Grilo.Aplication.UseCases.Account;
+using Grilo.Application.UseCases.Account;
 
 namespace Grilo.Api.Controllers
 {

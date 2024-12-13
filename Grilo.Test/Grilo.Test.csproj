@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Grilo.Aplication/Grilo.Aplication.csproj" />
+    <ProjectReference Include="../Grilo.Application/Grilo.Application.csproj" />
     <ProjectReference Include="../Grilo.Domain/Grilo.Domain.csproj" />
     <ProjectReference Include="../Grilo.Shared/Grilo.Shared.csproj" />
   </ItemGroup>

@@ -4,7 +4,7 @@ using Grilo.Api.Helper;
 using Grilo.Shared.Utils;
 using Grilo.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Grilo.Aplication.UseCases.Item;
+using Grilo.Application.UseCases.Item;
 
 namespace Grilo.Api.Controllers
 {

@@ -1,4 +1,4 @@
-using Grilo.Aplication.Repositories;
+using Grilo.Application.Repositories;
 using Grilo.Domain.Dtos.Order.GetAllOrders;
 using Grilo.Domain.Entities;
 using Grilo.Infra.Database;

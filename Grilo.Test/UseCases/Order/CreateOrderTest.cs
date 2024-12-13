@@ -1,4 +1,4 @@
-using Grilo.Aplication.UseCases.Order;
+using Grilo.Application.UseCases.Order;
 using Grilo.Domain.Dtos.Order;
 using Grilo.Domain.Dtos.Order.CreateOrder;
 using Grilo.Domain.Entities;

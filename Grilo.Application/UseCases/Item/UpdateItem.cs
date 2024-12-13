@@ -1,9 +1,9 @@
-using Grilo.Aplication.Repositories;
+using Grilo.Application.Repositories;
 using Grilo.Domain.Dtos;
 using Grilo.Domain.Entities;
 using Grilo.Shared.Utils;
 
-namespace Grilo.Aplication.UseCases.Item
+namespace Grilo.Application.UseCases.Item
 {
     public class UpdateItem(IItemRepository repository) : IUseCase<UpdateItemDTO, ItemEntity>
     {

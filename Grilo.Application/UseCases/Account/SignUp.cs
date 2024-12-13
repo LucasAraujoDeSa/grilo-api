@@ -1,10 +1,10 @@
-using Grilo.Aplication.Adapters;
-using Grilo.Aplication.Repositories;
+using Grilo.Application.Adapters;
+using Grilo.Application.Repositories;
 using Grilo.Domain.Dtos;
 using Grilo.Domain.Entities;
 using Grilo.Shared.Utils;
 
-namespace Grilo.Aplication.UseCases.Account
+namespace Grilo.Application.UseCases.Account
 {
     public class SignUp(IAccountRepository accountRepository, IEncrypter encrypter) : IUseCase<SignupInputDTO, SignupOutputDTO?>
     {
