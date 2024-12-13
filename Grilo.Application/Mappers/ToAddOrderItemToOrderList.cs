@@ -11,8 +11,11 @@ namespace Grilo.Application.Mappers
             IList<OrderItemDTO> orderItems
         )
         {
-            IList<AddOrderItemToOrder> orderItemsList = items.Zip(orderItems, (item, orderItem) =>
-                new AddOrderItemToOrder()
+            IList<AddOrderItemToOrder> orderItemsList = items.Join(
+                orderItems,
+                item => item.Id,
+                orderItem => orderItem.ItemId,
+                (item, orderItem) => new AddOrderItemToOrder()
                 {
                     ItemId = item.Id,
                     ItemTitle = item.Title,
