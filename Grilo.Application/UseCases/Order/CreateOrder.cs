@@ -1,3 +1,4 @@
+using Grilo.Application.Mappers;
 using Grilo.Application.Repositories;
 using Grilo.Domain.Dtos.Order.CreateOrder;
 using Grilo.Domain.Entities;
@@ -47,22 +48,14 @@ namespace Grilo.Application.UseCases.Order
                     return Result<bool>.OperationalError("One of the informed items does not exist");
                 }
 
-                IList<string> ErrorsList = [];
-
-                IList<AddOrderItemToOrder> orderItems = items.Zip(input.OrderItems, (item, orderItem) =>
-                    new AddOrderItemToOrder()
-                    {
-                        ItemId = item.Id,
-                        ItemTitle = item.Title,
-                        ItemPrice = item.Price,
-                        ItemQuantity = item.Quantity,
-                        OrderItemQuantity = orderItem.Quantity
-                    }
-                ).ToList();
+                IList<AddOrderItemToOrder> orderItems = ToAddOrderItemToOrderList.Make(
+                    items,
+                    input.OrderItems
+                );
 
                 foreach (var orderItem in orderItems)
                 {
-                    var addItemResult = newOrder.AddItemToOrder(orderItem);
+                    Result<bool> addItemResult = newOrder.AddItemToOrder(orderItem);
                     if (
                         !addItemResult.IsSuccess
                         &&
@@ -71,11 +64,6 @@ namespace Grilo.Application.UseCases.Order
                     {
                         return Result<bool>.OperationalError(addItemResult.Message);
                     }
-                }
-
-                if (ErrorsList.Any())
-                {
-                    return Result<bool>.OperationalError(ErrorsList.First());
                 }
 
                 await _repository.Save(newOrder);
