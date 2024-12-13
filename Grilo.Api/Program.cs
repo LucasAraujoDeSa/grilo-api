@@ -1,5 +1,5 @@
 using Grilo.Api.Config;
-using Grilo.Api.Dependencies;
+using Grilo.Application;
 using Grilo.Infra;
 using Grilo.Shared.Models.Settings;
 
@@ -13,9 +13,7 @@ builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSet
 Swagger.Configure(builder);
 
 builder.Services.AddInfra(builder.Configuration);
-Account.Initialize(builder);
-Item.Initialize(builder);
-Order.Initialize(builder);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
