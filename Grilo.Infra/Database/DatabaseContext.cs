@@ -15,10 +15,10 @@ namespace Grilo.Infra.Database
                 ic.OrderId
             });
         }
-        public DbSet<ItemEntity> Item { get; set; }
-        public DbSet<AccountEntity> Account { get; set; }
-        public DbSet<TokenBlackListEntity> TokenBlackList { get; set; }
-        public DbSet<OrderEntity> Order { get; set; }
-        public DbSet<OrderItemEntity> OrderItem { get; set; }
+        public required DbSet<ItemEntity> Item { get; set; }
+        public required DbSet<AccountEntity> Account { get; set; }
+        public required DbSet<TokenBlackListEntity> TokenBlackList { get; set; }
+        public required DbSet<OrderEntity> Order { get; set; }
+        public required DbSet<OrderItemEntity> OrderItem { get; set; }
     }
 }

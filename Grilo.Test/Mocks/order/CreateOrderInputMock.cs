@@ -1,4 +1,3 @@
-using Bogus;
 using Grilo.Domain.Dtos.Order.CreateOrder;
 
 namespace Grilo.Test.Mocks.order

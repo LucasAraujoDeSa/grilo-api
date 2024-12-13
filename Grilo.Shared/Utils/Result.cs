@@ -47,9 +47,9 @@ namespace Grilo.Shared.Utils
             return new Result<T> { IsSuccess = true, Content = default, Message = "Success", Status = "SUCCESS" };
         }
 
-        public static Result<T> Fail(string Message)
+        public static Result<T> Failure(string message)
         {
-            return new Result<T> { IsSuccess = false, Content = default, Message = "Fail", Status = "FAIL" };
+            return new Result<T> { IsSuccess = false, Content = default, Message = message, Status = "FAIL" };
         }
     }
 }

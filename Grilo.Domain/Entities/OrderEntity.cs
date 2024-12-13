@@ -16,15 +16,11 @@ namespace Grilo.Domain.Entities
         public string Status { get; set; } = OrderStatusEnum.IN_PROGRESS.ToString();
         public bool IsActive { get; set; } = true;
 
-        public void RaiseAmount(decimal amount)
-        {
-            Amount += amount;
-        }
-        public void SetInProgress()
-        {
-            Status = OrderStatusEnum.IN_PROGRESS.ToString();
-            IsActive = true;
-        }
+        public void RaiseAmount(decimal amount) { Amount += amount; }
+
+        public void ResetAmount() { Amount = 0; }
+
+        public void ResetItems() { Items = []; }
 
         public void SetAsDone()
         {
@@ -48,7 +44,7 @@ namespace Grilo.Domain.Entities
                 orderItem.OrderItemQuantity > orderItem.ItemQuantity ||
                 orderItem.OrderItemQuantity < 0)
             {
-                return Result<bool>.Fail($"invalid quantity for {orderItem.ItemTitle}");
+                return Result<bool>.Failure($"invalid quantity for {orderItem.ItemTitle}");
             }
             Items.Add(new(
                 itemId: orderItem.ItemId,
