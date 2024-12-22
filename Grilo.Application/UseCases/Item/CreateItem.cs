@@ -23,7 +23,8 @@ namespace Grilo.Application.UseCases.Item
                 ItemEntity newItem = new(
                     title: input.Title,
                     price: input.Price,
-                    quantity: input.Quantity
+                    quantity: input.Quantity,
+                    categoryId: input.CategoryId
                 );
 
                 await _repository.Save(newItem);

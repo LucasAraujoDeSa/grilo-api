@@ -47,9 +47,32 @@ namespace Grilo.Api.Migrations
                     b.ToTable("Account");
                 });
 
+            modelBuilder.Entity("Grilo.Domain.Entities.CategoryEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("Grilo.Domain.Entities.ItemEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CategoryId")
                         .HasColumnType("text");
 
                     b.Property<decimal>("Price")
@@ -63,6 +86,8 @@ namespace Grilo.Api.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Item");
                 });
@@ -90,6 +115,7 @@ namespace Grilo.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -134,6 +160,15 @@ namespace Grilo.Api.Migrations
                     b.ToTable("TokenBlackList");
                 });
 
+            modelBuilder.Entity("Grilo.Domain.Entities.ItemEntity", b =>
+                {
+                    b.HasOne("Grilo.Domain.Entities.CategoryEntity", "Category")
+                        .WithMany("Items")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Grilo.Domain.Entities.OrderEntity", b =>
                 {
                     b.HasOne("Grilo.Domain.Entities.AccountEntity", "Account")
@@ -162,6 +197,11 @@ namespace Grilo.Api.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Grilo.Domain.Entities.CategoryEntity", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Grilo.Domain.Entities.OrderEntity", b =>
