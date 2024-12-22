@@ -15,6 +15,7 @@ namespace Grilo.Infra.Database
                 ic.OrderId
             });
         }
+        public required DbSet<CategoryEntity> Category { get; set; }
         public required DbSet<ItemEntity> Item { get; set; }
         public required DbSet<AccountEntity> Account { get; set; }
         public required DbSet<TokenBlackListEntity> TokenBlackList { get; set; }
