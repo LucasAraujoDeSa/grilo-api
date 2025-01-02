@@ -29,6 +29,7 @@ namespace Grilo.Application
             services.AddTransient<UpdateOrder>();
             services.AddTransient<CreateCategory>();
             services.AddTransient<GetAllCategories>();
+            services.AddTransient<CancelOrder>();
         }
     }
 }

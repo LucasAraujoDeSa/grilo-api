@@ -16,13 +16,15 @@ namespace Grilo.Api.Controllers
         CreateOrder createOrder,
         GetAllOrders getAllOrders,
         MarkAsDone markAsDone,
-        UpdateOrder updateOrder
+        UpdateOrder updateOrder,
+        CancelOrder cancelOrder
     ) : ControllerBase
     {
         private readonly CreateOrder _createOrder = createOrder;
         private readonly GetAllOrders _getAllOrders = getAllOrders;
         private readonly MarkAsDone _markAsDone = markAsDone;
         private readonly UpdateOrder _updateOrder = updateOrder;
+        private readonly CancelOrder _cancelOrder = cancelOrder;
 
         #region "CreateOrder"
         [HttpPost]
@@ -91,6 +93,22 @@ namespace Grilo.Api.Controllers
             try
             {
                 Result<bool> result = await _markAsDone.Execute(id);
+                return StatusCode(StatusCodeHelper.Get(result.Status), result);
+            }
+            catch (Exception exc)
+            {
+                return StatusCode(500, Result<object>.InternalError(exc.Message));
+            }
+        }
+        #endregion
+
+        #region "CancelOrder"
+        [HttpPatch("cancelOrder/{id}")]
+        public async Task<ActionResult<Result<bool>>> CancelOrder(string id)
+        {
+            try
+            {
+                Result<bool> result = await _cancelOrder.Execute(id);
                 return StatusCode(StatusCodeHelper.Get(result.Status), result);
             }
             catch (Exception exc)
