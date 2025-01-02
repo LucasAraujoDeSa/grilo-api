@@ -1,3 +1,4 @@
+using Grilo.Domain.Dtos.Category;
 using Grilo.Domain.Entities;
 
 namespace Grilo.Application.Repositories
@@ -6,5 +7,6 @@ namespace Grilo.Application.Repositories
     {
         Task<bool> CheckCategoryByTitle(string title);
         Task Save(CategoryEntity input);
+        Task<IList<GetAllCategoriesDTO>> Get(string? title);
     }
 }

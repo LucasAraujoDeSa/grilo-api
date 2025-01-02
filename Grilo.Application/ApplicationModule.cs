@@ -28,6 +28,7 @@ namespace Grilo.Application
             services.AddTransient<MarkAsDone>();
             services.AddTransient<UpdateOrder>();
             services.AddTransient<CreateCategory>();
+            services.AddTransient<GetAllCategories>();
         }
     }
 }
