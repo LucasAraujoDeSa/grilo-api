@@ -26,7 +26,7 @@ namespace Grilo.Infra.Repositories
 
         public async Task<IEnumerable<ItemEntity>> Get()
         {
-            IEnumerable<ItemEntity> result = await _context.Item.ToListAsync();
+            IEnumerable<ItemEntity> result = await _context.Item.Include(item => item.Category).ToListAsync();
             return result;
         }
 

@@ -29,6 +29,7 @@ namespace Grilo.Infra
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IItemRepository, ItemRepository>();
             services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
         }
 
         public static void AddAdapters(IServiceCollection services)

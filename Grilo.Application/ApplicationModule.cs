@@ -1,4 +1,5 @@
 using Grilo.Application.UseCases.Account;
+using Grilo.Application.UseCases.Category;
 using Grilo.Application.UseCases.Item;
 using Grilo.Application.UseCases.Order;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,8 @@ namespace Grilo.Application
             services.AddTransient<GetAllOrders>();
             services.AddTransient<MarkAsDone>();
             services.AddTransient<UpdateOrder>();
+            services.AddTransient<CreateCategory>();
+            services.AddTransient<GetAllCategories>();
             services.AddTransient<CancelOrder>();
         }
     }

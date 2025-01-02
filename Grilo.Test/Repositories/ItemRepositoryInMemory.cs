@@ -11,7 +11,7 @@ namespace Grilo.Test.Repositories
         {
             for (int index = 1; index <= 10; index++)
             {
-                var mock = ItemEntityMock.GenerateMock(index);
+                var mock = ItemEntityMock.GenerateMock(index, Guid.NewGuid().ToString());
                 _data.Add(mock);
             }
         }
